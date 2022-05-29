@@ -55,7 +55,7 @@ const Section = ({children, title}): Node => {
     </View>
   );
 };
-
+let reference = database().ref('/nodes/0x00001');
 const App: () => Node = () => {
   const [token, setToken] = useState();
   const [foo, setFoo] = useState();
@@ -73,22 +73,15 @@ const App: () => Node = () => {
     setToken(t);
     console.log(t);
   });
+
   const isDarkMode = useColorScheme() === 'dark';
-  /*
-  database()
-    .ref('/nodes/0x00001')
-    .once('value')
-    .then(snapshot => {
+  useEffect(() => {
+    reference.on('value', snapshot => {
       console.log('User data: ', snapshot.val());
       setFoo(snapshot.val());
     });
-    */
-  database()
-    .ref('/nodes/0x00001')
-    .on('value', snapshot => {
-      console.log('User data: ', snapshot.val());
-      // setFoo(snapshot.val());
-    });
+  }, []);
+
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
